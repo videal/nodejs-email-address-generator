@@ -1,11 +1,12 @@
 {
-  "name": "nodejs-email-address-generator",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "node ./bin/www"
-  },
-  "dependencies": {
-    "handlebars": "~4.0.5"
-  }
+    "name": "nodejs-email-address-generator",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node ./bin/www"
+    },
+    "main": "main.js",
+    "dependencies": {
+        "handlebars": "~4.0.5"
+    }
 }
