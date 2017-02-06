@@ -1,63 +1,119 @@
 var handlebars = require('handlebars');
-var rules = [
-    '{{firstName}}@{{companyDomain}}',
-    '{{lastName}}@{{companyDomain}}',
-    '{{firstName}}{{lastName}}@{{companyDomain}}',
-    '{{firstName}}.{{lastName}}@{{companyDomain}}',
-    '{{firstNameInitial}}{{lastName}}@{{companyDomain}}',
-    '{{firstNameInitial}}.{{lastName}}@{{companyDomain}}',
-    '{{firstName}}{{lastNameInitial}}@{{companyDomain}}',
-    '{{firstName}}.{{lastNameInitial}}@{{companyDomain}}',
-    '{{firstNameInitial}}{{lastNameInitial}}@{{companyDomain}}',
-    '{{firstNameInitial}}.{{lastNameInitial}}@{{companyDomain}}',
-    '{{lastName}}{{firstName}}@{{companyDomain}}',
-    '{{lastName}}.{{firstName}}@{{companyDomain}}',
-    '{{lastName}}{{firstNameInitial}}@{{companyDomain}}',
-    '{{lastName}}.{{firstNameInitial}}@{{companyDomain}}',
-    '{{lastNameInitial}}{{firstName}}@{{companyDomain}}',
-    '{{lastNameInitial}}.{{firstName}}@{{companyDomain}}',
-    '{{lastNameInitial}}{{firstNameInitial}}@{{companyDomain}}',
-    '{{lastNameInitial}}.{{firstNameInitial}}@{{companyDomain}}',
-    '{{firstNameInitial}}{{middleNameInitial}}{{lastName}}@{{companyDomain}}',
-    '{{firstNameInitial}}{{middleNameInitial}}.{{lastName}}@{{companyDomain}}',
-    '{{firstName}}{{middleNameInitial}}{{lastName}}@{{companyDomain}}',
-    '{{firstName}}.{{middleNameInitial}}.{{lastName}}@{{companyDomain}}',
-    '{{firstName}}{{middleName}}{{lastName}}@{{companyDomain}}',
-    '{{firstName}}.{{middleName}}.{{lastName}}@{{companyDomain}}',
-    '{{firstName}}-{{lastName}}@{{companyDomain}}',
-    '{{firstNameInitial}}-{{lastName}}@{{companyDomain}}',
-    '{{firstName}}-{{lastNameInitial}}@{{companyDomain}}',
-    '{{firstNameInitial}}-{{lastNameInitial}}@{{companyDomain}}',
-    '{{lastName}}-{{firstName}}@{{companyDomain}}',
-    '{{lastName}}-{{firstNameInitial}}@{{companyDomain}}',
-    '{{lastNameInitial}}-{{firstName}}@{{companyDomain}}',
-    '{{lastNameInitial}}-{{firstNameInitial}}@{{companyDomain}}',
-    '{{firstNameInitial}}{{middleNameInitial}}-{{lastName}}@{{companyDomain}}',
-    '{{firstName}}-{{middleNameInitial}}-{{lastName}}@{{companyDomain}}',
-    '{{firstName}}-{{middleName}}-{{lastName}}@{{companyDomain}}',
-    '{{firstName}}_{{lastName}}@{{companyDomain}}',
-    '{{firstNameInitial}}_{{lastName}}@{{companyDomain}}',
-    '{{firstName}}_{{lastNameInitial}}@{{companyDomain}}',
-    '{{firstNameInitial}}_{{lastNameInitial}}@{{companyDomain}}',
-    '{{lastName}}_{{firstName}}@{{companyDomain}}',
-    '{{lastName}}_{{firstNameInitial}}@{{companyDomain}}',
-    '{{lastNameInitial}}_{{firstName}}@{{companyDomain}}',
-    '{{lastNameInitial}}_{{firstNameInitial}}@{{companyDomain}}',
-    '{{firstNameInitial}}{{middleNameInitial}}_{{lastName}}@{{companyDomain}}',
-    '{{firstName}}_{{middleNameInitial}}_{{lastName}}@{{companyDomain}}',
-    '{{firstName}}_{{middleName}}_{{lastName}}@{{companyDomain}}'];
+
+/**
+ * Register helper, that checks for the existence of parameters
+ */
+handlebars.registerHelper('if_all', function () {
+    var args = [].slice.apply(arguments);
+    var opts = args.pop();
+
+    var fn = opts.fn;
+    for (var i = 0; i < args.length; ++i) {
+        if (args[i])
+            continue;
+        fn = opts.inverse;
+        break;
+    }
+    return fn(this);
+});
+
+var localRules = [
+    '{{#if firstName}}{{firstName}}@{{companyDomain}}{{/if}}',
+    '{{#if lastName}}{{lastName}}@{{companyDomain}}{{/if}}',
+    '{{#if_all firstName lastName}}{{firstName}}{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{lastName}}{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{firstName}}.{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{lastName}}.{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{firstName}}-{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{lastName}}-{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{firstName}}_{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{lastName}}_{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastNameInitial}}{{firstName}}{{lastNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastNameInitial}}{{firstName}}.{{lastNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastNameInitial}}{{firstName}}-{{lastNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastNameInitial}}{{firstName}}_{{lastNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleName lastName}}{{firstName}}{{middleName}}{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleName lastName}}{{firstName}}.{{middleName}}.{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleName lastName}}{{firstName}}-{{middleName}}-{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleName lastName}}{{firstName}}_{{middleName}}_{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleNameInitial lastName}}{{firstName}}{{middleNameInitial}}{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleNameInitial lastName}}{{firstName}}.{{middleNameInitial}}.{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleNameInitial lastName}}{{firstName}}-{{middleNameInitial}}-{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleNameInitial lastName}}{{firstName}}_{{middleNameInitial}}_{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastName firstNameInitial}}{{lastName}}{{firstNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastName firstNameInitial}}{{lastName}}.{{firstNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastName firstNameInitial}}{{lastName}}-{{firstNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastName firstNameInitial}}{{lastName}}_{{firstNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial lastName}}{{firstNameInitial}}{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial lastName}}{{firstNameInitial}}.{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial lastName}}{{firstNameInitial}}-{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial lastName}}{{firstNameInitial}}_{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial lastNameInitial}}{{firstNameInitial}}{{lastNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial lastNameInitial}}{{firstNameInitial}}.{{lastNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial lastNameInitial}}{{firstNameInitial}}-{{lastNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial lastNameInitial}}{{firstNameInitial}}_{{lastNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial middleNameInitial lastName}}{{firstNameInitial}}{{middleNameInitial}}{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial middleNameInitial lastName}}{{firstNameInitial}}{{middleNameInitial}}.{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial middleNameInitial lastName}}{{firstNameInitial}}{{middleNameInitial}}-{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial middleNameInitial lastName}}{{firstNameInitial}}{{middleNameInitial}}_{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastNameInitial firstName}}{{lastNameInitial}}{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastNameInitial firstName}}{{lastNameInitial}}.{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastNameInitial firstName}}{{lastNameInitial}}-{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastNameInitial firstName}}{{lastNameInitial}}_{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastNameInitial firstNameInitial}}{{lastNameInitial}}{{firstNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastNameInitial firstNameInitial}}{{lastNameInitial}}.{{firstNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastNameInitial firstNameInitial}}{{lastNameInitial}}-{{firstNameInitial}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastNameInitial firstNameInitial}}{{lastNameInitial}}_{{firstNameInitial}}@{{companyDomain}}{{/if_all}}',
+    'ask@{{companyDomain}}',
+    'info@{{companyDomain}}',
+    'informacion@{{companyDomain}}',
+    'support@{{companyDomain}}',
+    'office@{{companyDomain}}'
+];
+
+var globalRules = [
+    '{{#if_all firstName lastName}}{{firstName}}{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{firstName}}.{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{firstName}}-{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{firstName}}_{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{lastName}}{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{lastName}}.{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{lastName}}-{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{lastName}}_{{firstName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleName lastName}}{{firstName}}{{middleName}}{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleName lastName}}{{firstName}}.{{middleName}}.{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleName lastName}}{{firstName}}-{{middleName}}-{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName middleName lastName}}{{firstName}}_{{middleName}}_{{lastName}}@{{companyDomain}}{{/if_all}}',
+];
+
 var commonDomains = [
     'gmail.com',
     'yahoo.com',
-    'hotmail.com'];
-var templates = [];
-for (var i = 0; i < rules.length; i++) {
-    var template = handlebars.compile(rules[i]);
-    templates.push(template);
+    'hotmail.com'
+];
+
+var globalTemplates = [],
+    localTemplates = [];
+
+for (let i = 0; i < globalRules.length; i++) {
+    var globalTemplate = handlebars.compile(globalRules[i]);
+    globalTemplates.push(globalTemplate);
 }
+
+for (let i = 0; i < localRules.length; i++) {
+    var localTemplate = handlebars.compile(localRules[i]);
+    localTemplates.push(localTemplate);
+}
+
 module.exports = {
     build: function (firstName, lastName, middleName, companyDomain) {
-        var arguments = {};
+        var mailingList = [],
+            domain = [],
+            arguments = {};
+
+        if (!firstName && !lastName && !middleName && !companyDomain) {
+            return mailingList;
+        }
         if (firstName) {
             arguments.firstName = firstName;
             arguments.firstNameInitial = firstName.substring(0, 1);
@@ -70,22 +126,24 @@ module.exports = {
             arguments.middleName = middleName;
             arguments.middleNameInitial = middleName.substring(0, 1);
         }
+
         if (companyDomain) {
-            arguments.companyDomain = companyDomain;
+            domain.push(companyDomain);
+        } else {
+            domain = commonDomains;
         }
-        var results = [];
-        for (var i = 0; i < templates.length; i++) {
-            var template = templates[i];
-            var result = template(arguments);
-            result = result.toLowerCase();
-            results.push(result);
-        }
-        if (0 > commonDomains.indexOf(companyDomain)) {
-            for (var i = 0; i < commonDomains.length; i++) {
-                var commonDomain = commonDomains[i];
-                results = results.concat(this.build(firstName, middleName, lastName, commonDomain));
+
+        for (let i = 0; i < domain.length; i++) {
+            arguments.companyDomain = domain[i];
+            for (let i = 0; i < localTemplates.length; i++) {
+                let template = localTemplates[i];
+                let result = template(arguments);
+                if (result) {
+                    result = result.toLowerCase();
+                    mailingList.push(result);
+                }
             }
         }
-        return results;
+        return mailingList;
     }
 };

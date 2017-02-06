@@ -1,12 +1,18 @@
 {
-    "name": "nodejs-email-address-generator",
-    "version": "0.0.1",
-    "private": true,
-    "scripts": {
-        "start": "node ./bin/www"
-    },
-    "main": "main.js",
-    "dependencies": {
-        "handlebars": "~4.0.5"
-    }
+  "name": "nodejs-email-address-generator",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "mocha tests"
+  },
+  "main": "main.js",
+  "dependencies": {
+    "handlebars": "~4.0.5"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "sinon": "^1.17.7"
+  }
 }
