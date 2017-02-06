@@ -28,6 +28,8 @@ describe('EmailGenerator:', function() {
                 expect(EmailGenerator.build('firstName', 'lastName', undefined, 'company.com')).to.include('support@company.com');
             });
             it('Result array should contain "office@company.com" email address', function() {
+                console.dir(EmailGenerator.build('firstName', 'lastName', 'middleName', 'company.com'))
+
                 expect(EmailGenerator.build('firstName', 'lastName', undefined, 'company.com')).to.include('office@company.com');
             });
             it('Result array should not contain "office@gmail.com" email address', function() {

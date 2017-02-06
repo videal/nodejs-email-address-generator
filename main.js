@@ -66,8 +66,10 @@ var localRules = [
     '{{#if_all lastNameInitial firstNameInitial}}{{lastNameInitial}}_{{firstNameInitial}}@{{companyDomain}}{{/if_all}}',
     'ask@{{companyDomain}}',
     'info@{{companyDomain}}',
-    'informacion@{{companyDomain}}',
     'support@{{companyDomain}}',
+    'seo@{{companyDomain}}',
+    'cto@{{companyDomain}}',
+    'seils@{{companyDomain}}',
     'office@{{companyDomain}}'
 ];
 
@@ -109,7 +111,8 @@ module.exports = {
     build: function (firstName, lastName, middleName, companyDomain) {
         var mailingList = [],
             domain = [],
-            arguments = {};
+            arguments = {},
+            templates = [];
 
         if (!firstName && !lastName && !middleName && !companyDomain) {
             return mailingList;
@@ -129,14 +132,16 @@ module.exports = {
 
         if (companyDomain) {
             domain.push(companyDomain);
+            templates = localTemplates;
         } else {
             domain = commonDomains;
+            templates = globalTemplates;
         }
 
         for (let i = 0; i < domain.length; i++) {
             arguments.companyDomain = domain[i];
-            for (let i = 0; i < localTemplates.length; i++) {
-                let template = localTemplates[i];
+            for (let i = 0; i < templates.length; i++) {
+                let template = templates[i];
                 let result = template(arguments);
                 if (result) {
                     result = result.toLowerCase();

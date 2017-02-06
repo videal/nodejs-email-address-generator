@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "mocha tests"
+    "test": "mocha tests",
+    "test-dev": "mocha tests --recursive --watch"
+
   },
   "main": "main.js",
   "dependencies": {
