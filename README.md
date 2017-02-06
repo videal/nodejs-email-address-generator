@@ -7,5 +7,10 @@ Generates possible e-mail addresses based on the following values:
 ## Sample Code
 ```
 var generator = require(...);
-var results = generator.build('Alex', 'Vinogradov', 'videal.net');
+```
+
+## Unit testing
+To start unit tests please run
+```
+npm run test
 ```

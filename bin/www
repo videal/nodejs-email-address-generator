@@ -1,4 +1,2 @@
 #!/usr/bin/env node
 var main = require('../main');
-var results = main.build('Alex', 'Vinogradov', 'Alexeevich', 'videal.net');
-console.log(results);
