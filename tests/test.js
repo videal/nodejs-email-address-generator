@@ -28,8 +28,6 @@ describe('EmailGenerator:', function() {
                 expect(EmailGenerator.build('firstName', 'lastName', undefined, 'company.com')).to.include('support@company.com');
             });
             it('Result array should contain "office@company.com" email address', function() {
-                console.dir(EmailGenerator.build('firstName', 'lastName', 'middleName', 'company.com'))
-
                 expect(EmailGenerator.build('firstName', 'lastName', undefined, 'company.com')).to.include('office@company.com');
             });
             it('Result array should not contain "office@gmail.com" email address', function() {
@@ -41,7 +39,6 @@ describe('EmailGenerator:', function() {
                 expect(EmailGenerator.build('firstName', 'lastName')).to.include('firstname_lastname@gmail.com');
             });
             it('Result array should contain "firstname_middlename_lastname@gmail.com" email address', function() {
-                console.dir(EmailGenerator.build('firstName', 'lastName', 'middleName'))
                 expect(EmailGenerator.build('firstName', 'lastName', 'middleName')).to.include('firstname_middlename_lastname@gmail.com');
             });
             it('Result array should contain "firstName_lastName@gmail.com" email address', function() {
@@ -49,6 +46,12 @@ describe('EmailGenerator:', function() {
             });
             it('Result array should contain "firstName_lastName@gmail.com" email address', function() {
                 expect(EmailGenerator.build('firstName', 'lastName')).to.include('firstname_lastname@gmail.com');
+            });
+            it('Result array should not contain "office@company.com" email address', function() {
+                expect(EmailGenerator.build('firstName', 'lastName')).to.not.include('office@company.com');
+            });
+            it('Result array should not contain "firstName.lastName@company.com" email address', function() {
+                expect(EmailGenerator.build('firstName', 'lastName')).to.not.include('firstName.lastName@company.com');
             });
         });
     });
