@@ -88,14 +88,24 @@ var globalRules = [
     '{{#if_all firstName middleName lastName}}{{firstName}}_{{middleName}}_{{lastName}}@{{companyDomain}}{{/if_all}}',
 ];
 
+var simpleRules = [
+    '{{#if firstName}}{{firstName}}@{{companyDomain}}{{/if}}',
+    '{{#if_all firstNameInitial lastName}}{{firstNameInitial}}.{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstNameInitial lastName}}{{firstNameInitial}}{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{firstName}}{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all firstName lastName}}{{firstName}}.{{lastName}}@{{companyDomain}}{{/if_all}}',
+    '{{#if_all lastNameInitial firstName}}{{firstName}}{{lastNameInitial}}@{{companyDomain}}{{/if_all}}',
+];
+
 var commonDomains = [
     'gmail.com',
     'yahoo.com',
-    'hotmail.com'
+    //'hotmail.com'
 ];
 
 var globalTemplates = [],
-    localTemplates = [];
+    localTemplates = [],
+    simpleTemplates = [];
 
 for (let i = 0; i < globalRules.length; i++) {
     var globalTemplate = handlebars.compile(globalRules[i]);
@@ -107,8 +117,13 @@ for (let i = 0; i < localRules.length; i++) {
     localTemplates.push(localTemplate);
 }
 
+for (let i = 0; i < simpleRules.length; i++) {
+    var simpleTemplate = handlebars.compile(simpleRules[i]);
+    simpleTemplates.push(simpleTemplate);
+}
+
 module.exports = {
-    build: function (firstName, lastName, middleName, companyDomain) {
+    build: function (firstName, lastName, middleName, companyDomain, isSimple) {
         var mailingList = [],
             domain = [],
             arguments = {},
@@ -130,10 +145,17 @@ module.exports = {
             arguments.middleNameInitial = middleName.substring(0, 1);
         }
 
-        if (companyDomain) {
+        if (isSimple) {
+            domain = commonDomains;
+            if (companyDomain) {
+                domain.push(companyDomain);
+            }
+            templates = simpleTemplates;
+        } else if (companyDomain) {
             domain.push(companyDomain);
             templates = localTemplates;
-        } else {
+        }
+        else {
             domain = commonDomains;
             templates = globalTemplates;
         }
