@@ -97,12 +97,6 @@ var simpleRules = [
     '{{#if_all lastNameInitial firstName}}{{firstName}}{{lastNameInitial}}@{{companyDomain}}{{/if_all}}',
 ];
 
-var commonDomains = [
-    'gmail.com',
-    'yahoo.com',
-    //'hotmail.com'
-];
-
 var globalTemplates = [],
     localTemplates = [],
     simpleTemplates = [];
@@ -127,7 +121,12 @@ module.exports = {
         var mailingList = [],
             domain = [],
             arguments = {},
-            templates = [];
+            templates = [],
+            commonDomains = [
+                'gmail.com',
+                'yahoo.com',
+                //'hotmail.com'
+            ];
 
         if (!firstName && !lastName && !middleName && !companyDomain) {
             return mailingList;
